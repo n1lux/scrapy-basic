@@ -9,12 +9,14 @@ def first(sel, xpath):
 class YouTubeChannelLister(scrapy.Spider):
     name = 'channel-lister'
     youtube_channel = 'portadosfundos'
-    
+
     start_urls = ('https://www.youtube.com/user/{}/videos'.format(youtube_channel),)
-    
+
+    custom_settings = {'DOWNLOAD_DELAY': 1.5}
+
 
     def parse(self, response):
-        
+
         for sel in response.css("ul#channels-browse-content-grid > li"):
             yield {
                 'link': response.urljoin(first(sel, './/h3/a/@href')),
